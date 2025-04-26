@@ -25,7 +25,11 @@ MPU6050Driver() : Node("mpu6050node"),
   }
   mpu6050_->printOffsets();
   // Create publisher
-  publisher_ = this->create_publisher<sensor_msgs::msg::Imu>("imu", 10);
+  publisher_ = this->create_publisher<sensor_msgs::msg::Imu>(
+    this->get_parameter("topic_name").as_string(), 
+    10);
+
+  // Create timer
   double frequency_hz = static_cast<double>(this->get_parameter("frequency").as_int());
   auto period_ms = std::chrono::milliseconds(static_cast<int>(1000.0 / frequency_hz));
   timer_ = this->create_wall_timer(
@@ -78,6 +82,7 @@ private:
   }
   void declareParameters()
   {
+    this->declare_parameter<std::string>("topic_name", "/imu");
     this->declare_parameter<bool>("calibrate", true);
     this->declare_parameter<int>("gyro_range", MPU6050Sensor::GyroRange::GYR_250_DEG_S);
     this->declare_parameter<int>("accel_range", MPU6050Sensor::AccelRange::ACC_2_G);
@@ -93,6 +98,7 @@ private:
 
   void printParameters()
   {
+    std::string topic_name = this->get_parameter("topic_name").as_string();
     bool calibrate = this->get_parameter("calibrate").as_bool();
     int gyro_range = this->get_parameter("gyro_range").as_int();
     int accel_range = this->get_parameter("accel_range").as_int();
@@ -106,6 +112,7 @@ private:
     int frequency = this->get_parameter("frequency").as_int();
 
     RCLCPP_INFO(this->get_logger(), "Parameters:");
+    RCLCPP_INFO(this->get_logger(), "  topic_name: %s", topic_name.c_str());
     RCLCPP_INFO(this->get_logger(), "  calibrate: %s", calibrate ? "true" : "false");
     RCLCPP_INFO(this->get_logger(), "  gyro_range: %d", gyro_range);
     RCLCPP_INFO(this->get_logger(), "  accel_range: %d", accel_range);
