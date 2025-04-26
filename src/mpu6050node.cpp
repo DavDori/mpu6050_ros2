@@ -4,6 +4,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/imu.hpp"
 
+#define DEG2RAD(x) ((x) * M_PI / 180.0)
 using namespace std::chrono_literals;
 
 class MPU6050Driver : public rclcpp::Node {
@@ -59,9 +60,9 @@ private:
     message.linear_acceleration.x = mpu6050_->getAccelerationX();
     message.linear_acceleration.y = mpu6050_->getAccelerationY();
     message.linear_acceleration.z = mpu6050_->getAccelerationZ();
-    message.angular_velocity.x = mpu6050_->getAngularVelocityXdegps();
-    message.angular_velocity.y = mpu6050_->getAngularVelocityYdegps();
-    message.angular_velocity.z = mpu6050_->getAngularVelocityZdegps();
+    message.angular_velocity.x = DEG2RAD(mpu6050_->getAngularVelocityXdegps());
+    message.angular_velocity.y = DEG2RAD(mpu6050_->getAngularVelocityYdegps());
+    message.angular_velocity.z = DEG2RAD(mpu6050_->getAngularVelocityZdegps());
     // Invalidate quaternion
     message.orientation.x = 0;
     message.orientation.y = 0;
