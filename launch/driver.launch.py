@@ -13,14 +13,14 @@ def generate_launch_description():
     parameter_file = LaunchConfiguration('params_file')
 
     params_declare = DeclareLaunchArgument('params_file',
-                                           default_value=os.path.join(
-                                               share_dir, 'params', 'mpu6050.yaml'),
-                                           description='Path to the ROS2 parameters file to use.')
+        default_value=os.path.join(
+            share_dir, 'config', 'mpu6050.yaml'),
+        description='Path to the ROS2 parameters file to use.')
 
     mpu6050driver_node = Node(
-        package='mpu6050driver',
-        executable='mpu6050driver',
-        name='mpu6050driver_node',
+        package='mpu6050',
+        executable='mpu6050node',
+        name='mpu6050node',
         output="screen",
         emulate_tty=True,
         parameters=[parameter_file]

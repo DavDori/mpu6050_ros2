@@ -29,9 +29,9 @@ class MPU6050Sensor {
   double getAccelerationX() const;
   double getAccelerationY() const;
   double getAccelerationZ() const;
-  double getAngularVelocityX() const;
-  double getAngularVelocityY() const;
-  double getAngularVelocityZ() const;
+  double getAngularVelocityXdegps() const;
+  double getAngularVelocityYdegps() const;
+  double getAngularVelocityZdegps() const;
   void setGyroscopeOffset(double gyro_x_offset, double gyro_y_offset, double gyro_z_offset);
   void setAccelerometerOffset(double accel_x_offset, double accel_y_offset, double accel_z_offset);
   void calibrate();

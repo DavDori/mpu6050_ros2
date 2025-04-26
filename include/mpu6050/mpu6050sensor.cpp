@@ -1,6 +1,6 @@
-#include "mpu6050driver/mpu6050sensor.h"
+#include "mpu6050sensor.h"
 
-extern "C" {
+extern "C" { 
 #include <errno.h>
 #include <fcntl.h>
 #include <i2c/smbus.h>
@@ -49,7 +49,7 @@ void MPU6050Sensor::printOffsets() const
 {
   std::cout << "Accelerometer Offsets: x: " << accel_x_offset_ << ", y: " << accel_y_offset_
             << ", z: " << accel_z_offset_ << "\n";
-  std::cout << "Gyroscope Offsets: x: " << gyro_x_offset_ << ", y: " << gyro_y_offset_
+  std::cout << "Gyroscope Offsets [deg/s]: x: " << gyro_x_offset_ << ", y: " << gyro_y_offset_
             << ", z: " << gyro_z_offset_ << "\n";
 }
 
@@ -137,7 +137,7 @@ double MPU6050Sensor::getAccelerationZ() const
   return accel_z_converted;
 }
 
-double MPU6050Sensor::getAngularVelocityX() const
+double MPU6050Sensor::getAngularVelocityXdegps() const
 {
   int16_t gyro_x_msb = i2c_smbus_read_byte_data(file_, GYRO_XOUT_H);
   int16_t gyro_x_lsb = i2c_smbus_read_byte_data(file_, GYRO_XOUT_H + 1);
@@ -149,7 +149,7 @@ double MPU6050Sensor::getAngularVelocityX() const
   return gyro_x_converted;
 }
 
-double MPU6050Sensor::getAngularVelocityY() const
+double MPU6050Sensor::getAngularVelocityYdegps() const
 {
   int16_t gyro_y_msb = i2c_smbus_read_byte_data(file_, GYRO_YOUT_H);
   int16_t gyro_y_lsb = i2c_smbus_read_byte_data(file_, GYRO_YOUT_H + 1);
@@ -161,7 +161,7 @@ double MPU6050Sensor::getAngularVelocityY() const
   return gyro_y_converted;
 }
 
-double MPU6050Sensor::getAngularVelocityZ() const
+double MPU6050Sensor::getAngularVelocityZdegps() const
 {
   int16_t gyro_z_msb = i2c_smbus_read_byte_data(file_, GYRO_ZOUT_H);
   int16_t gyro_z_lsb = i2c_smbus_read_byte_data(file_, GYRO_ZOUT_H + 1);
@@ -206,9 +206,9 @@ void MPU6050Sensor::calibrate()
 {
   int count = 0;
   while (count < CALIBRATION_COUNT) {
-    gyro_x_offset_ += getAngularVelocityX();
-    gyro_y_offset_ += getAngularVelocityY();
-    gyro_z_offset_ += getAngularVelocityZ();
+    gyro_x_offset_ += getAngularVelocityXdegps();
+    gyro_y_offset_ += getAngularVelocityYdegps();
+    gyro_z_offset_ += getAngularVelocityZdegps();
     accel_x_offset_ += getAccelerationX();
     accel_y_offset_ += getAccelerationY();
     accel_z_offset_ += getAccelerationZ();
