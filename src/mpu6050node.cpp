@@ -16,20 +16,8 @@ MPU6050Driver() : Node("mpu6050node"),
   // Declare parameters
   declareParameters();
   printParameters();
-  // Set parameters
-  mpu6050_->setGyroscopeRange(
-    static_cast<MPU6050Sensor::GyroRange>(this->get_parameter("gyro_range").as_int()));
-  mpu6050_->setAccelerometerRange(
-    static_cast<MPU6050Sensor::AccelRange>(this->get_parameter("accel_range").as_int()));
-  mpu6050_->setDlpfBandwidth(
-    static_cast<MPU6050Sensor::DlpfBandwidth>(this->get_parameter("dlpf_bandwidth").as_int()));
-  mpu6050_->setGyroscopeOffset(this->get_parameter("gyro_x_offset").as_double(),
-                            this->get_parameter("gyro_y_offset").as_double(),
-                            this->get_parameter("gyro_z_offset").as_double());
-  mpu6050_->setAccelerometerOffset(this->get_parameter("accel_x_offset").as_double(),
-                                this->get_parameter("accel_y_offset").as_double(),
-                                this->get_parameter("accel_z_offset").as_double());
-  // Check if we want to calibrate the sensor
+  // Set parameters to the sensor
+  setupSensor();
   if (this->get_parameter("calibrate").as_bool()) 
   {
     RCLCPP_INFO(this->get_logger(), "Calibrating...");
@@ -71,6 +59,23 @@ private:
     publisher_->publish(message);
   }
 
+
+  void setupSensor()
+  {
+    // Set the sensor configuration
+    mpu6050_->setGyroscopeRange(
+      static_cast<MPU6050Sensor::GyroRange>(this->get_parameter("gyro_range").as_int()));
+    mpu6050_->setAccelerometerRange(
+      static_cast<MPU6050Sensor::AccelRange>(this->get_parameter("accel_range").as_int()));
+    mpu6050_->setDlpfBandwidth(
+      static_cast<MPU6050Sensor::DlpfBandwidth>(this->get_parameter("dlpf_bandwidth").as_int()));
+    mpu6050_->setGyroscopeOffset(this->get_parameter("gyro_x_offset").as_double(),
+                              this->get_parameter("gyro_y_offset").as_double(),
+                              this->get_parameter("gyro_z_offset").as_double());
+    mpu6050_->setAccelerometerOffset(this->get_parameter("accel_x_offset").as_double(),
+                                  this->get_parameter("accel_y_offset").as_double(),
+                                  this->get_parameter("accel_z_offset").as_double());
+  }
   void declareParameters()
   {
     this->declare_parameter<bool>("calibrate", true);
