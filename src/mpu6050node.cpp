@@ -117,9 +117,9 @@ private:
     RCLCPP_INFO(this->get_logger(), "  gyro_range: %d", gyro_range);
     RCLCPP_INFO(this->get_logger(), "  accel_range: %d", accel_range);
     RCLCPP_INFO(this->get_logger(), "  dlpf_bandwidth: %d", dlpf_bandwidth);
-    RCLCPP_INFO(this->get_logger(), "  gyro offset: %.6f, %.6f, %.6f", gyro_x_offset, gyro_y_offset, gyro_z_offset);
-    RCLCPP_INFO(this->get_logger(), "  accel offset: %.6f, %.6f, %.6f", accel_x_offset, accel_y_offset, accel_z_offset);
-    RCLCPP_INFO(this->get_logger(), "  frequency: %d", frequency);
+    RCLCPP_INFO(this->get_logger(), "  gyro offset [deg/s]: %.6f, %.6f, %.6f", gyro_x_offset, gyro_y_offset, gyro_z_offset);
+    RCLCPP_INFO(this->get_logger(), "  accel offset [m/s^2]: %.6f, %.6f, %.6f", accel_x_offset, accel_y_offset, accel_z_offset);
+    RCLCPP_INFO(this->get_logger(), "  frequency [Hz]: %d", frequency);
   }
 };
 
